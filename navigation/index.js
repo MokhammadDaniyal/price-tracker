@@ -11,6 +11,7 @@ import SettingsScreen from '../Screens/Settings';
 const TabNavigator = createBottomTabNavigator();
 const TabStack = () => (
   <TabNavigator.Navigator
+    initialRouteName="Profile"
     tabBarOptions={{
       style: {
         backgroundColor: '#c2c8c5',
