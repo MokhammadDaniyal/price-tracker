@@ -8,6 +8,7 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
+import {connect} from 'react-redux';
 import RootNavigator from './navigation';
 
 class App extends React.Component {
@@ -15,18 +16,30 @@ class App extends React.Component {
     super();
     this.state = {
       loading: false,
-      hasToken: true,
     };
   }
   render() {
     return (
       <>
         <RootNavigator
-          hasToken={this.state.hasToken}
+          hasToken={this.props.hasToken}
           loading={this.state.loading}
         />
       </>
     );
   }
 }
-export default App;
+
+mapStateToProps = state => {
+  return {
+    hasToken: state.user.hasToken,
+  };
+};
+
+mapDispatchToProps = props => {
+  return {};
+};
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps,
+)(App);
