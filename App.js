@@ -15,7 +15,7 @@ class App extends React.Component {
     super();
     this.state = {
       loading: false,
-      hasToken: false,
+      hasToken: true,
     };
   }
   render() {
