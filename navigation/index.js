@@ -7,11 +7,13 @@ import {createStackNavigator} from '@react-navigation/stack';
 import LoginScreen from '../Screens/Login';
 import HomeScreen from '../Screens/Home';
 import SettingsScreen from '../Screens/Settings';
+import SignupScreen from '../Screens/Signup';
+import AuthScreen from '../Screens/Auth';
 
 const TabNavigator = createBottomTabNavigator();
 const TabStack = () => (
   <TabNavigator.Navigator
-    initialRouteName="Profile"
+    initialRouteName="Home"
     tabBarOptions={{
       style: {
         backgroundColor: '#c2c8c5',
@@ -32,12 +34,13 @@ const AuthStack = () => (
     }}
     headerMode="none">
     <Auth.Screen name="Login" component={LoginScreen} />
-    {/* <Auth.Screen name="Signup" component={SignupScreen} /> */}
+    <Auth.Screen name="Signup" component={SignupScreen} />
+    <Auth.Screen name="Auth" component={AuthScreen} />
   </Auth.Navigator>
 );
 const RootStack = createStackNavigator();
 
-const RootNavigator = props => {
+const RootNavigator = (props) => {
   const {loading, hasToken} = props;
   if (loading) {
     return <WelcomeScreen />;
