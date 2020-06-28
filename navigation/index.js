@@ -28,7 +28,11 @@ getTabBarVisibility = (route) => {
 const Home = createStackNavigator();
 const HomeStack = () => (
   <Home.Navigator>
-    <Home.Screen name="Home" component={HomeScreen} />
+    <Home.Screen
+      name="Home"
+      component={HomeScreen}
+      options={HomeScreen.navigationOptions}
+    />
     <Home.Screen name="ProductSearch" component={ProductSearchScreen} />
     <Home.Screen name="Product" component={ProductScreen} />
   </Home.Navigator>

@@ -37,4 +37,8 @@ function HomeScreen(props) {
   );
 }
 
+HomeScreen['navigationOptions'] = (screenProps) => ({
+  headerShown: false,
+});
+
 export default HomeScreen;
