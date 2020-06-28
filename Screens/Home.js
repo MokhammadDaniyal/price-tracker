@@ -20,13 +20,19 @@ const actions = [
     textColor: '#FFFFFFF',
   },
 ];
-function HomeScreen() {
+function HomeScreen(props) {
   return (
     <LinearGradient
       colors={['#c2c8c5', '#ddddda']}
       style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Home!</Text>
-      <FloatingAction actions={actions} color="#c2c8c5" />
+      <FloatingAction
+        actions={actions}
+        color="#c2c8c5"
+        onPressItem={(name) => {
+          props.navigation.navigate('ProductSearch');
+        }}
+      />
     </LinearGradient>
   );
 }

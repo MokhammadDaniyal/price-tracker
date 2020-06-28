@@ -10,6 +10,30 @@ import SettingsScreen from '../Screens/Settings';
 import SignupScreen from '../Screens/Signup';
 import AuthScreen from '../Screens/Auth';
 
+import ProductSearchScreen from '../Screens/ProductSearch';
+import ProductScreen from '../Screens/Product';
+
+getTabBarVisibility = (route) => {
+  const routeName = route.state
+    ? route.state.routes[route.state.index].name
+    : '';
+
+  if (['Home', 'Profile', 'Settings'].includes(routeName)) {
+    return true;
+  }
+
+  return false;
+};
+
+const Home = createStackNavigator();
+const HomeStack = () => (
+  <Home.Navigator>
+    <Home.Screen name="Home" component={HomeScreen} />
+    <Home.Screen name="ProductSearch" component={ProductSearchScreen} />
+    <Home.Screen name="Product" component={ProductScreen} />
+  </Home.Navigator>
+);
+
 const TabNavigator = createBottomTabNavigator();
 const TabStack = () => (
   <TabNavigator.Navigator
@@ -19,7 +43,13 @@ const TabStack = () => (
         backgroundColor: '#c2c8c5',
       },
     }}>
-    <TabNavigator.Screen name="Home" component={HomeScreen} />
+    <TabNavigator.Screen
+      options={({route}) => ({
+        tabBarVisible: this.getTabBarVisibility(route),
+      })}
+      name="Home"
+      component={HomeStack}
+    />
     <TabNavigator.Screen name="Profile" component={SettingsScreen} />
     <TabNavigator.Screen name="Settings" component={SettingsScreen} />
   </TabNavigator.Navigator>
