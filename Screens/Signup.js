@@ -10,6 +10,7 @@ const SignupScreen = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  const [emailError, setEmailError] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -19,24 +20,32 @@ const SignupScreen = (props) => {
         <Text style={{fontSize: 20}}>
           Please provide your email and password:
         </Text>
-        <InputComponent placeholder="email" onChange={setEmail} />
+        <InputComponent
+          placeholder="Email"
+          isError={emailError}
+          onChange={setEmail}
+        />
         <InputComponent
           isSecure={true}
-          placeholder="password"
+          placeholder="Password"
           onChange={(text) => setPassword(text)}
         />
         <InputComponent
           isSecure={true}
           isError={password !== confirmPassword}
-          placeholder="confirm password"
+          placeholder="Confirm password"
           onChange={(text) => setConfirmPassword(text)}
-          errorText="passwords don't match"
+          errorText="Passwords don't match"
         />
         <Button
           style={{marginTop: 10, width: 150}}
           size="large"
           type="primary"
-          onPress={props.login}>
+          onPress={() => {
+            if (email == '') {
+              setEmailError(email == '');
+            } else props.login();
+          }}>
           Sing up
         </Button>
       </View>

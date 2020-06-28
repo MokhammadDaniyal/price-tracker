@@ -9,6 +9,8 @@ import {loginUser} from '../store/userReducer/actions';
 const AuthScreen = (props) => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+  const [isErrorEmail, setErrorEmail] = useState(false);
+  const [isErrorPassword, setErrorPassword] = useState(false);
 
   return (
     <KeyboardAvoidingView
@@ -18,17 +20,33 @@ const AuthScreen = (props) => {
         <Text style={{fontSize: 20}}>
           Please provide your email and password:
         </Text>
-        <InputComponent placeholder="email" onChange={setEmail} />
         <InputComponent
+          isError={isErrorEmail}
+          placeholder="Email"
+          onChange={(text) => {
+            setErrorEmail(false);
+            setEmail(text);
+          }}
+        />
+        <InputComponent
+          isError={isErrorPassword}
           isSecure={true}
-          placeholder="password"
-          onChange={(text) => setPassword(text)}
+          placeholder="Password"
+          onChange={(text) => {
+            setErrorPassword(false);
+            setPassword(text);
+          }}
         />
         <Button
           style={{marginTop: 10, width: 150}}
           size="large"
           type="primary"
-          onPress={props.login}>
+          onPress={() => {
+            if (email == '' || password == '') {
+              setErrorEmail(email == '');
+              setErrorPassword(password == '');
+            } else props.login();
+          }}>
           Login
         </Button>
       </View>
