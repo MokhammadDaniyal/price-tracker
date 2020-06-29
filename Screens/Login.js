@@ -7,6 +7,7 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
+  Platform,
 } from 'react-native';
 import {connect} from 'react-redux';
 import Animated, {Easing} from 'react-native-reanimated';
@@ -182,14 +183,13 @@ const LoginScreen = (props) => {
   return (
     <KeyboardAvoidingView
       style={{flex: 1, justifyContent: 'center'}}
-      behavior="padding">
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View
         style={{flex: 1, backgroundColor: 'white', justifyContent: 'flex-end'}}>
         <Animated.View
           style={{
             ...StyleSheet.absoluteFill,
             transform: [{translateY: bgY}],
-            zIndex: 2,
           }}>
           <Svg height={height + 50} width={width}>
             <ClipPath id="clip">
