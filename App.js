@@ -10,36 +10,55 @@ import 'react-native-gesture-handler';
 import React from 'react';
 import {connect} from 'react-redux';
 import RootNavigator from './navigation';
+import {Asset} from 'expo-asset';
+import {AppLoading} from 'expo';
 
+function cacheImages(images) {
+  return images.map((image) => {
+    if (typeof image === 'string') {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
-      loading: false,
+      isLoading: false,
     };
   }
+
+  async _loadAssetsAsync() {
+    const imageAssets = cacheImages([require('./assets/bg.jpg')]);
+
+    await Promise.all([...imageAssets]);
+  }
   render() {
+    if (!this.state.isLoading) {
+      <AppLoading
+        startAsync={this._loadAssetsAsync}
+        onFinish={() => this.setState({isReady: true})}
+        onError={console.warn}
+      />;
+    }
     return (
-      <>
-        <RootNavigator
-          hasToken={this.props.hasToken}
-          loading={this.state.loading}
-        />
-      </>
+      <RootNavigator
+        hasToken={this.props.hasToken}
+        loading={this.state.isLoading}
+      />
     );
   }
 }
 
-mapStateToProps = state => {
+mapStateToProps = (state) => {
   return {
     hasToken: state.user.hasToken,
   };
 };
 
-mapDispatchToProps = props => {
+mapDispatchToProps = (props) => {
   return {};
 };
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps,
-)(App);
+export default connect(mapStateToProps, mapDispatchToProps)(App);

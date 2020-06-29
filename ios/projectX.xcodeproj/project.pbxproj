@@ -17,10 +17,10 @@
 		2D02E4BD1E0B4A84006451C7 /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2D02E4BF1E0B4AB3006451C7 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		2DCD954D1E0B4F2C00145EB5 /* projectXTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* projectXTests.m */; };
+		3832486F68714D56B04E5DCD /* antfill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1932725D8925437087EC822D /* antfill.ttf */; };
 		41BFA944533AD1D16E1D4713 /* libPods-projectX-projectXTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5D06F3CB4D80A1581925136 /* libPods-projectX-projectXTests.a */; };
 		8A92B22EA3CEF2EC065C9863 /* libPods-projectX.a in Frameworks */ = {isa = PBXBuildFile; fileRef = C5DE04CE4F4C0567B6A180C1 /* libPods-projectX.a */; };
 		8B619DE6094B3541D6B1FFE1 /* libPods-projectX-tvOS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 5CF4B9E956CFEF81DE7B3DCD /* libPods-projectX-tvOS.a */; };
-		3832486F68714D56B04E5DCD /* antfill.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 1932725D8925437087EC822D /* antfill.ttf */; };
 		C305061064BC4113AC16344B /* antoutline.ttf in Resources */ = {isa = PBXBuildFile; fileRef = D1B238252FE14D2A936E81AC /* antoutline.ttf */; };
 /* End PBXBuildFile section */
 
@@ -54,6 +54,7 @@
 		13B07FB51A68108700A75B9A /* Images.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; name = Images.xcassets; path = projectX/Images.xcassets; sourceTree = "<group>"; };
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = projectX/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = projectX/main.m; sourceTree = "<group>"; };
+		1932725D8925437087EC822D /* antfill.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = antfill.ttf; path = "../node_modules/@ant-design/icons-react-native/fonts/antfill.ttf"; sourceTree = "<group>"; };
 		2D02E47B1E0B4A5D006451C7 /* projectX-tvOS.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "projectX-tvOS.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		2D02E4901E0B4A5D006451C7 /* projectX-tvOSTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = "projectX-tvOSTests.xctest"; sourceTree = BUILT_PRODUCTS_DIR; };
 		4CF42A4DAE95BC2D8BD12B7C /* Pods-projectX.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectX.debug.xcconfig"; path = "Target Support Files/Pods-projectX/Pods-projectX.debug.xcconfig"; sourceTree = "<group>"; };
@@ -80,13 +81,12 @@
 		C5DE04CE4F4C0567B6A180C1 /* libPods-projectX.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-projectX.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		CE884836C767D80D293CFCA7 /* Pods-projectX.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectX.release.xcconfig"; path = "Target Support Files/Pods-projectX/Pods-projectX.release.xcconfig"; sourceTree = "<group>"; };
 		D11C4FDBC092B78C50714E50 /* libPods-projectX-tvOSTests.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-projectX-tvOSTests.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		D1B238252FE14D2A936E81AC /* antoutline.ttf */ = {isa = PBXFileReference; explicitFileType = undefined; fileEncoding = 9; includeInIndex = 0; lastKnownFileType = unknown; name = antoutline.ttf; path = "../node_modules/@ant-design/icons-react-native/fonts/antoutline.ttf"; sourceTree = "<group>"; };
 		D7C30B3B8A7BF38DE41904AA /* Pods-projectX-tvOSTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectX-tvOSTests.release.xcconfig"; path = "Target Support Files/Pods-projectX-tvOSTests/Pods-projectX-tvOSTests.release.xcconfig"; sourceTree = "<group>"; };
 		DC920E1AE9A142C71825AB94 /* Pods-projectX-projectXTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectX-projectXTests.release.xcconfig"; path = "Target Support Files/Pods-projectX-projectXTests/Pods-projectX-projectXTests.release.xcconfig"; sourceTree = "<group>"; };
 		ED297162215061F000B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = System/Library/Frameworks/JavaScriptCore.framework; sourceTree = SDKROOT; };
 		ED2971642150620600B7C4FE /* JavaScriptCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = JavaScriptCore.framework; path = Platforms/AppleTVOS.platform/Developer/SDKs/AppleTVOS12.0.sdk/System/Library/Frameworks/JavaScriptCore.framework; sourceTree = DEVELOPER_DIR; };
 		F79D926CC3988BD1863DE7AE /* Pods-projectX-projectXTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-projectX-projectXTests.debug.xcconfig"; path = "Target Support Files/Pods-projectX-projectXTests/Pods-projectX-projectXTests.debug.xcconfig"; sourceTree = "<group>"; };
-		1932725D8925437087EC822D /* antfill.ttf */ = {isa = PBXFileReference; name = "antfill.ttf"; path = "../node_modules/@ant-design/icons-react-native/fonts/antfill.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
-		D1B238252FE14D2A936E81AC /* antoutline.ttf */ = {isa = PBXFileReference; name = "antoutline.ttf"; path = "../node_modules/@ant-design/icons-react-native/fonts/antoutline.ttf"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = unknown; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -154,6 +154,15 @@
 				13B07FB71A68108700A75B9A /* main.m */,
 			);
 			name = projectX;
+			sourceTree = "<group>";
+		};
+		1ED67BC542BF415488E38E4C /* Resources */ = {
+			isa = PBXGroup;
+			children = (
+				1932725D8925437087EC822D /* antfill.ttf */,
+				D1B238252FE14D2A936E81AC /* antoutline.ttf */,
+			);
+			name = Resources;
 			sourceTree = "<group>";
 		};
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
@@ -241,16 +250,6 @@
 			);
 			path = Pods;
 			sourceTree = "<group>";
-		};
-		1ED67BC542BF415488E38E4C /* Resources */ = {
-			isa = "PBXGroup";
-			children = (
-				1932725D8925437087EC822D /* antfill.ttf */,
-				D1B238252FE14D2A936E81AC /* antoutline.ttf */,
-			);
-			name = Resources;
-			sourceTree = "<group>";
-			path = "";
 		};
 /* End PBXGroup section */
 
@@ -348,6 +347,7 @@
 						TestTargetID = 13B07F861A680F5B00A75B9A;
 					};
 					13B07F861A680F5B00A75B9A = {
+						DevelopmentTeam = S29NDT3V56;
 						LastSwiftMigration = 1120;
 					};
 					2D02E47A1E0B4A5D006451C7 = {
@@ -784,6 +784,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S29NDT3V56;
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -797,7 +798,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.projectXghfgh;
 				PRODUCT_NAME = projectX;
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -812,6 +813,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = S29NDT3V56;
 				INFOPLIST_FILE = projectX/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -820,7 +822,7 @@
 					"-ObjC",
 					"-lc++",
 				);
-				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
+				PRODUCT_BUNDLE_IDENTIFIER = org.reactjs.native.example.projectXghfgh;
 				PRODUCT_NAME = projectX;
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
