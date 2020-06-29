@@ -16,7 +16,7 @@ import ProductScreen from '../Screens/Product';
 getTabBarVisibility = (route) => {
   const routeName = route.state
     ? route.state.routes[route.state.index].name
-    : '';
+    : route.name;
 
   if (['Home', 'Profile', 'Settings'].includes(routeName)) {
     return true;
