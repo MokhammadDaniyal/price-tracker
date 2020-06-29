@@ -36,10 +36,10 @@ class App extends React.Component {
     await Promise.all([...imageAssets]);
   }
   render() {
-    if (!this.state.isLoading) {
+    if (this.state.isLoading) {
       <AppLoading
         startAsync={this._loadAssetsAsync}
-        onFinish={() => this.setState({isReady: true})}
+        onFinish={() => this.setState({isLoading: true})}
         onError={console.warn}
       />;
     }

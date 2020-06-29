@@ -1,20 +1,19 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Dimensions,
-  TextInput,
   KeyboardAvoidingView,
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {Button} from '@ant-design/react-native';
 import {connect} from 'react-redux';
 import Animated, {Easing} from 'react-native-reanimated';
 import {TapGestureHandler, State} from 'react-native-gesture-handler';
 import {loginUser} from '../store/userReducer/actions';
 import Svg, {Image, Circle, ClipPath} from 'react-native-svg';
+import Input from '../Components/Input';
 function runTiming(clock, value, dest) {
   const state = {
     finished: new Value(0),
@@ -64,17 +63,6 @@ const styles = StyleSheet.create({
     shadowColor: 'black',
     shadowOpacity: 0.2,
   },
-  textInput: {
-    height: 50,
-    borderRadius: 25,
-    borderWidth: 0.5,
-    marginHorizontal: 20,
-    paddingLeft: 10,
-    marginVertical: 5,
-    borderColor: 'rgba(0,0,0,0.2)',
-    backgroundColor: 'white',
-    color: 'black',
-  },
   closeButton: {
     height: 40,
     width: 40,
@@ -110,6 +98,7 @@ const {
 } = Animated;
 
 const LoginScreen = (props) => {
+  const [isSignup, setSignup] = useState(false);
   let buttonOpacity = new Value(1);
   const onStateChange = event([
     {
@@ -156,6 +145,7 @@ const LoginScreen = (props) => {
     outputRange: [180, 360],
     extrapolate: Extrapolate.CLAMP,
   });
+
   const onCloseState = event([
     {
       nativeEvent: ({state}) =>
@@ -165,9 +155,30 @@ const LoginScreen = (props) => {
             set(buttonOpacity, runTiming(new Clock(), 0, 1)),
           ),
         ]),
-      // block([cond(eq(state, State.END)), set(buttonOpacity, 0)]),
     },
   ]);
+
+  // function onCloseState(e) {
+  //   const state = e.nativeEvent.state;
+  //   console.log(state);
+  //   console.log(State.END);
+  //   if (state == State.END) {
+  //     const timing = runTiming(new Clock(), 0, 1);
+  //     buttonOpacity.setValue(timing);
+  //   }
+  // return event([
+  //   {
+  //     nativeEvent: () =>
+  //       block([
+  //         cond(
+  //           eq(state, State.END),
+  //           set(buttonOpacity, runTiming(new Clock(), 0, 1)),
+  //         ),
+  //       ]),
+  //     // block([cond(eq(state, State.END)), set(buttonOpacity, 0)]),
+  //   },
+  // ]);
+  // }
   return (
     <KeyboardAvoidingView
       style={{flex: 1, justifyContent: 'center'}}
@@ -193,7 +204,7 @@ const LoginScreen = (props) => {
             />
           </Svg>
         </Animated.View>
-        <View style={{height: height / 3, justifyContent: 'center'}}>
+        <View style={{height: height / 3, justifyContent: 'center', zIndex: 3}}>
           <TapGestureHandler onHandlerStateChange={onStateChange}>
             <Animated.View
               style={{
@@ -204,15 +215,19 @@ const LoginScreen = (props) => {
               <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN IN</Text>
             </Animated.View>
           </TapGestureHandler>
-          <Animated.View
-            style={{
-              ...styles.button,
-              backgroundColor: '#2E71DC',
-              opacity: buttonOpacity,
-              transform: [{translateY: buttonY}],
-            }}>
-            <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN UP</Text>
-          </Animated.View>
+          {/* <TouchableOpacity onPress={() => setSignup(true)}> */}
+          <TapGestureHandler onHandlerStateChange={onStateChange}>
+            <Animated.View
+              style={{
+                ...styles.button,
+                backgroundColor: '#2E71DC',
+                opacity: buttonOpacity,
+                transform: [{translateY: buttonY}],
+              }}>
+              <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN UP</Text>
+            </Animated.View>
+          </TapGestureHandler>
+          {/* </TouchableOpacity> */}
           <Animated.View
             style={{
               zIndex: textInputZindex,
@@ -224,51 +239,41 @@ const LoginScreen = (props) => {
               justifyContent: 'center',
             }}>
             <TapGestureHandler onHandlerStateChange={onCloseState}>
-              <Animated.View style={styles.closeButton}>
+              <Animated.View
+                style={{
+                  ...styles.closeButton,
+                  transform: [{rotate: concat(rotateCross, 'deg')}],
+                }}>
                 <TouchableWithoutFeedback
-                  onPress={Keyboard.dismiss}
-                  accessible={false}>
-                  <Animated.Text
-                    style={{transform: [{rotate: concat(rotateCross, 'deg')}]}}>
-                    X
-                  </Animated.Text>
+                  onPress={() => {
+                    Keyboard.dismiss();
+                    setSignup(false);
+                  }}>
+                  <View
+                    style={{
+                      height: 40,
+                      width: 40,
+                      alignItems: 'center',
+                      justifyContent: 'center',
+                      position: 'absolute',
+                    }}>
+                    <Text>X</Text>
+                  </View>
                 </TouchableWithoutFeedback>
               </Animated.View>
             </TapGestureHandler>
-            <TextInput
-              placeholder="EMAIL"
-              style={styles.textInput}
-              placeholderTextColor="black"
-            />
-            <TextInput
-              placeholder="PASSWORD"
-              style={styles.textInput}
-              placeholderTextColor="black"
-            />
-            <Animated.View style={styles.button}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN IN</Text>
-            </Animated.View>
+            <Input placeholder="EMAIL" />
+            <Input placeholder="PASSWORD" />
+            {isSignup && <Input placeholder="CONFIRM PASSWORD" />}
+            <TouchableWithoutFeedback onPress={props.login}>
+              <View style={styles.button}>
+                <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN IN</Text>
+              </View>
+            </TouchableWithoutFeedback>
           </Animated.View>
         </View>
       </View>
     </KeyboardAvoidingView>
-    // <View style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
-    //   <Button
-    //     style={{marginBottom: 10, width: 150}}
-    //     size="large"
-    //     type="primary"
-    //     onPress={() => props.navigation.navigate('Auth')}>
-    //     Login
-    //   </Button>
-    //   <Text style={{fontSize: 18}}>or</Text>
-    //   <Button
-    //     style={{marginTop: 10, width: 150}}
-    //     size="large"
-    //     type="primary"
-    //     onPress={() => props.navigation.navigate('Signup')}>
-    //     Sign up
-    //   </Button>
-    // </View>
   );
 };
 

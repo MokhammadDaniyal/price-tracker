@@ -4,32 +4,35 @@ import PropTypes from 'prop-types';
 
 const styles = StyleSheet.create({
   text: {
-    fontSize: 16,
-    height: 40,
-    backgroundColor: 'white',
-    width: 350,
+    height: 50,
+    borderRadius: 25,
+    borderWidth: 0.5,
+    marginHorizontal: 20,
     paddingLeft: 10,
-    borderRadius: 5,
+    marginVertical: 5,
+    backgroundColor: 'white',
+    color: 'black',
   },
   textValid: {
-    borderColor: 'gray',
+    borderColor: 'rgba(0,0,0,0.2)',
   },
   textInvalid: {
     borderWidth: 1,
     borderColor: 'red',
   },
 });
-const InputComponent = (props) => {
-  console.log(props.isError);
+const Input = (props) => {
   return (
-    <View style={{margin: 15}}>
+    <View>
       <TextInput
         style={[
           styles.text,
+          (placeholderTextColor = 'black'),
           props.isError ? styles.textInvalid : styles.textValid,
         ]}
+        placeholderTextColor="black"
         placeholder={props.placeholder}
-        onChangeText={(text) => props.onChange(text)}
+        onChangeText={props.onChange}
         secureTextEntry={props.isSecure}
         autoCapitalize="none"
       />
@@ -38,7 +41,7 @@ const InputComponent = (props) => {
   );
 };
 
-InputComponent.propTypes = {
+Input.propTypes = {
   isError: PropTypes.bool,
   isSecure: PropTypes.bool,
   errorText: PropTypes.string,
@@ -46,4 +49,4 @@ InputComponent.propTypes = {
   onChange: PropTypes.func,
 };
 
-export default InputComponent;
+export default Input;

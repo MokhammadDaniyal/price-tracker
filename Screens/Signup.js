@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {View, Text, KeyboardAvoidingView} from 'react-native';
 import {Button} from '@ant-design/react-native';
-import InputComponent from '../Components/InputComponent';
+import Input from '../Components/Input';
 import {connect} from 'react-redux';
 
 import {loginUser} from '../store/userReducer/actions';
