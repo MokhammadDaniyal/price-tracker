@@ -3,7 +3,8 @@ import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import {hideNavigationBar} from 'react-native-navigation-bar-color';
+hideNavigationBar();
 import LoginScreen from '../Screens/Login';
 import HomeScreen from '../Screens/Home';
 import SettingsScreen from '../Screens/Settings';
