@@ -28,6 +28,7 @@
     "prop-types": "^15.7.2",
     "react": "16.11.0",
     "react-native": "0.62.2",
+    "react-native-dropdown-picker": "^3.0.5",
     "react-native-floating-action": "^1.20.0",
     "react-native-gesture-handler": "^1.6.1",
     "react-native-linear-gradient": "^2.5.6",
