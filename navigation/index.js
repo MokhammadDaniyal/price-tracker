@@ -1,9 +1,10 @@
 import React from 'react';
-
+import {StatusBar} from 'react-native';
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import {createStackNavigator} from '@react-navigation/stack';
-
+import {hideNavigationBar} from 'react-native-navigation-bar-color';
+hideNavigationBar();
 import LoginScreen from '../Screens/Login';
 import HomeScreen from '../Screens/Home';
 import SettingsScreen from '../Screens/Settings';
@@ -16,7 +17,7 @@ import ProductScreen from '../Screens/Product';
 getTabBarVisibility = (route) => {
   const routeName = route.state
     ? route.state.routes[route.state.index].name
-    : '';
+    : route.name;
 
   if (['Home', 'Profile', 'Settings'].includes(routeName)) {
     return true;
@@ -31,7 +32,7 @@ const HomeStack = () => (
     <Home.Screen
       name="Home"
       component={HomeScreen}
-      options={HomeScreen.navigationOptions}
+      options={{headerShown: false}}
     />
     <Home.Screen name="ProductSearch" component={ProductSearchScreen} />
     <Home.Screen name="Product" component={ProductScreen} />
@@ -81,6 +82,11 @@ const RootNavigator = (props) => {
   } else {
     return (
       <NavigationContainer>
+        <StatusBar
+          translucent
+          backgroundColor="transparent"
+          barStyle="dark-content"
+        />
         <RootStack.Navigator headerMode="none">
           {!hasToken ? (
             <RootStack.Screen name="Auth" component={AuthStack} />

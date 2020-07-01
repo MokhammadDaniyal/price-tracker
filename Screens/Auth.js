@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {connect} from 'react-redux';
 import {View, Text, KeyboardAvoidingView} from 'react-native';
 import {Button} from '@ant-design/react-native';
-import InputComponent from '../Components/InputComponent';
+import Input from '../Components/Input';
 
 import {loginUser} from '../store/userReducer/actions';
 

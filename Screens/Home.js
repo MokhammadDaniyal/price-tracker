@@ -8,18 +8,6 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 
 const windowWidth = Dimensions.get('window').width;
 
-const actions = [
-  {
-    text: 'Amazon',
-    icon: <Icon name="amazon" size={30} />,
-    name: 'amazon',
-    position: 1,
-    color: '#FFFFFFF00',
-    textBackground: '#FFFFFFF00',
-    textStyle: {fontSize: 20},
-    textColor: '#FFFFFFF',
-  },
-];
 function HomeScreen(props) {
   return (
     <LinearGradient
@@ -27,9 +15,10 @@ function HomeScreen(props) {
       style={{flex: 1, justifyContent: 'center', alignItems: 'center'}}>
       <Text>Home!</Text>
       <FloatingAction
-        actions={actions}
+        animated={false}
+        showBackground={false}
         color="#c2c8c5"
-        onPressItem={(name) => {
+        onPressMain={(name) => {
           props.navigation.navigate('ProductSearch');
         }}
       />
