@@ -4,37 +4,16 @@ import {
   ImageBackground,
   View,
   Text,
-  Button,
-  Dimensions,
   TouchableHighlight,
   FlatList,
   TextInput,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
-import DropDownPicker from 'react-native-dropdown-picker';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
-import Input from '../Components/Input';
 
 import images from '../images';
 
-const deviceWidth = Dimensions.get('window').width;
-const deviceHeight = Dimensions.get('window').height;
-
-const hoursPicker = [
-  {label: '1', value: 1},
-  {label: '2', value: 2},
-  {label: '3', value: 3},
-  {label: '4', value: 4},
-  {label: '5', value: 5},
-  {label: '6', value: 6},
-  {label: '7', value: 7},
-  {label: '8', value: 8},
-  {label: '9', value: 9},
-  {label: '10', value: 10},
-  {label: '11', value: 11},
-  {label: '12', value: 12},
-];
 function ProductScreen(props) {
   const list = [
     {
@@ -87,7 +66,6 @@ function ProductScreen(props) {
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
   const [pickerItemId, setPickerItemId] = useState('0');
   const [isModalVisible, setIsModalVisible] = useState(false);
-  const [dropBelowPrice, setDropBelowPrice] = useState(0);
   const [isTrackingAlready, setIsTrackingAlready] = useState(false);
   const product = {
     image: images.ps4,
@@ -114,7 +92,6 @@ function ProductScreen(props) {
   resetModalState = () => {
     setModalList(list);
     setPickerItemId('0');
-    setDropBelowPrice(0);
     if (isTrackingAlready) {
       setIsTrackingAlready(false);
       return;
@@ -150,6 +127,15 @@ function ProductScreen(props) {
     });
     setModalList(listToUpdate);
     setIsDatePickerVisible(false);
+  };
+
+  handlePriceInput = (price) => {
+    const listToUpdate = [...modalList];
+    listToUpdate.splice(pickerItemId, 1, {
+      ...listToUpdate[pickerItemId],
+      inputValue: price,
+    });
+    setModalList(listToUpdate);
   };
 
   handleTimeOpen = (item) => {
@@ -244,9 +230,8 @@ function ProductScreen(props) {
                     borderRadius: 5,
                     borderColor: item.isError ? 'red' : 'lightgray',
                   }}
-                  value={dropBelowPrice}
                   onChangeText={(text) => {
-                    setDropBelowPrice(text);
+                    handlePriceInput(text);
                   }}
                 />
               </View>
