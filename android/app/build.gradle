@@ -190,6 +190,8 @@ android {
 dependencies {
     implementation fileTree(dir: "libs", include: ["*.jar"])
     //noinspection GradleDynamicVersion
+    implementation 'androidx.appcompat:appcompat:1.0.0'
+
     implementation project(':react-native-svg')
 
     implementation "com.facebook.react:react-native:+"  // From node_modules
