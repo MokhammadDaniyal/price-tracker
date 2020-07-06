@@ -8,41 +8,29 @@
 
 import 'react-native-gesture-handler';
 import React from 'react';
+import {Image} from 'react-native';
 import {connect} from 'react-redux';
 import RootNavigator from './navigation';
-import {Asset} from 'expo-asset';
 import {AppLoading} from 'expo';
+import SplashScreen from 'react-native-splash-screen';
 
-function cacheImages(images) {
-  return images.map((image) => {
-    if (typeof image === 'string') {
-      return Image.prefetch(image);
-    } else {
-      return Asset.fromModule(image).downloadAsync();
-    }
-  });
-}
 class App extends React.Component {
   constructor() {
     super();
     this.state = {
       isLoading: false,
     };
-  }
 
-  async _loadAssetsAsync() {
-    const imageAssets = cacheImages([require('./assets/bg.jpg')]);
-
-    await Promise.all([...imageAssets]);
+    //   let imagePromise = Image.prefetch('assets/bg.jpg');
+    //   Promise.all([imagePromise]).then(() => {
+    //     console.log('LOADED!!');
+    //   });
   }
   render() {
-    if (!this.state.isLoading) {
-      <AppLoading
-        startAsync={this._loadAssetsAsync}
-        onFinish={() => this.setState({isReady: true})}
-        onError={console.warn}
-      />;
-    }
+    const img = require('./assets/bg.jpg');
+    setTimeout(() => {
+      SplashScreen.hide();
+    }, 1000);
     return (
       <RootNavigator
         hasToken={this.props.hasToken}
