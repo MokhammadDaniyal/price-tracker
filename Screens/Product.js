@@ -258,7 +258,12 @@ function ProductScreen(props) {
     );
   };
   return (
-    <View style={{flex: 1, justifyContent: 'center'}}>
+    <View
+      style={{
+        backgroundColor: 'white',
+        flex: 1,
+        justifyContent: 'center',
+      }}>
       <View
         style={{
           flex: 1,
@@ -297,6 +302,8 @@ function ProductScreen(props) {
           paddingLeft: 10,
           flex: 1,
           justifyContent: 'space-around',
+          borderTopWidth: 0.4,
+          borderTopColor: 'grey',
           // alignItems: 'center',
           flexDirection: 'column',
         }}>

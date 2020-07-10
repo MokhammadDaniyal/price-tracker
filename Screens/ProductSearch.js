@@ -10,6 +10,7 @@ function ProductSearchScreen(props) {
   return (
     <View
       style={{
+        backgroundColor: 'white',
         flex: 1,
         alignItems: 'center',
         justifyContent: 'flex-start',
@@ -64,7 +65,7 @@ function renderListItem({title, price, reviews}) {
       style={{
         borderColor: 'black',
         borderWidth: 0.2,
-        backgroundColor: '#D3D3D3',
+        backgroundColor: '#F6F6F6',
         flexDirection: 'row',
         alignItems: 'center',
         marginHorizontal: 10,
@@ -73,21 +74,39 @@ function renderListItem({title, price, reviews}) {
         marginVertical: 5,
       }}>
       <Image
-        style={{flex: 1, height: 150, marginLeft: 20}}
+        style={{flex: 1, height: 150, marginLeft: 10}}
         source={images.ps4}
       />
       <View
         style={{
-          marginLeft: 25,
-          flex: 1.5,
+          paddingTop: 20,
+          marginLeft: 20,
+          marginRight: 10,
+          flex: 1,
+          flexDirection: 'column',
           height: '100%',
-          borderColor: 'red',
-          borderWidth: 1,
-          justifyContent: 'space-evenly',
         }}>
-        <Text>{title}</Text>
-        <Text>Price: {price}</Text>
-        <Text>{reviews} Reviews</Text>
+        <View
+          style={{
+            flex: 1.5,
+            flexGrow: 1,
+            alignSelf: 'baseline',
+          }}>
+          <Text
+            style={{flex: 1, fontSize: 19}}
+            numberOfLines={5}
+            ellipsizeMode="tail">
+            {title}
+          </Text>
+        </View>
+        <View
+          style={{
+            flex: 0.5,
+            flexDirection: 'column',
+            justifyContent: 'flex-end',
+          }}>
+          <Text style={{fontSize: 16, paddingBottom: 20}}>Price: {price}</Text>
+        </View>
       </View>
     </View>
   );
@@ -95,19 +114,21 @@ function renderListItem({title, price, reviews}) {
 const DATA = [
   {
     id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title: 'First Item',
+    title:
+      'First Item with a very very very very very very very very very very very very very very very very long description',
     price: 2500,
     reviews: 1231123,
   },
   {
     id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title: 'Second Item',
+    title:
+      'Second Item with much much much much much much much much much much much much much much much much much much much much much much much much long description',
     price: 2500,
     reviews: 1231123,
   },
   {
     id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Third Item',
+    title: 'Short description',
     price: 2500,
     reviews: 1231123,
   },
