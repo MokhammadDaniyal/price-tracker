@@ -116,8 +116,6 @@ const Login2Screen = (props) => {
               backgroundColor: '#F3904F',
               height: height + 100,
               top: -80,
-              borderColor: 'black',
-              borderWidth: 1,
             }}>
             <Image source={images.logo} />
           </View>
@@ -303,26 +301,5 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 2, height: 2},
     shadowColor: 'black',
     shadowOpacity: 0.2,
-  },
-  containerStyle: {
-    alignSelf: 'center',
-    width: width,
-    overflow: 'hidden',
-    height: height + 100,
-    backgroundColor: '#F3904F',
-    borderColor: 'red',
-    borderWidth: 1,
-  },
-  sliderContainerStyle: {
-    borderRadius: width,
-    width: width * 2,
-    height: width * 2,
-    marginLeft: -(width / 2),
-    position: 'absolute',
-    bottom: 10,
-    // overflow: 'hidden',
-    backgroundColor: '#F3904F',
-    borderColor: 'black',
-    borderWidth: 1,
   },
 });
