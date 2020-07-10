@@ -92,7 +92,8 @@ const Login2Screen = (props) => {
   return (
     <KeyboardAvoidingView
       style={{flex: 1, justifyContent: 'center'}}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      // behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior="height">
       <View
         style={{
           flex: 1,
@@ -126,7 +127,12 @@ const Login2Screen = (props) => {
               width: '100%',
               top: -100,
             }}>
-            <Circle cx={width / 2} cy={-270} r={width} fill="#F3904F" />
+            <Circle
+              cx={width / 2}
+              cy={Platform.OS == 'ios' ? -310 : -270}
+              r={width}
+              fill="#F3904F"
+            />
           </Svg>
         </Animated.View>
         <TouchableWithoutFeedback
