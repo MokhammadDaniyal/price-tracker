@@ -114,8 +114,10 @@ const Login2Screen = (props) => {
               alignItems: 'center',
               justifyContent: 'center',
               backgroundColor: '#F3904F',
-              height: height + 20,
+              height: height + 100,
               top: -80,
+              borderColor: 'black',
+              borderWidth: 1,
             }}>
             <Image source={images.logo} />
           </View>
