@@ -5,16 +5,13 @@ import {
   StyleSheet,
   Dimensions,
   KeyboardAvoidingView,
-  Keyboard,
   TouchableWithoutFeedback,
-  Platform,
   Animated,
-  Button,
   Image,
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import Svg, {Circle, ClipPath, View as ViewSvg} from 'react-native-svg';
+import Svg, {Circle} from 'react-native-svg';
 
 import {loginUser} from '../store/userReducer/actions';
 import Input from '../Components/Input';
@@ -110,29 +107,18 @@ const Login2Screen = (props) => {
               transform: [{translateY: imageUp}],
             },
           ]}>
-          <View
-            style={{
-              alignItems: 'center',
-              justifyContent: 'center',
-              backgroundColor: '#F3904F',
-              height: height + 100,
-              top: -80,
-            }}>
-            <Image source={images.logo} />
-          </View>
-          <Svg
-            width={width}
-            style={{
-              height: '100%',
-              width: '100%',
-              top: -100,
-            }}>
-            <Circle
-              cx={width / 2}
-              cy={Platform.OS == 'ios' ? -310 : -270}
-              r={width}
-              fill="#F3904F"
-            />
+          <Svg height={height + 90} width={width}>
+            <Circle fill="#F3904F" r={height + 90} cx={width / 2} />
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#F3904F',
+                height: height + 100,
+                top: -80,
+              }}>
+              <Image source={images.logo} />
+            </View>
           </Svg>
         </Animated.View>
         <TouchableWithoutFeedback
@@ -183,7 +169,7 @@ const Login2Screen = (props) => {
             <View
               style={{
                 ...styles.button,
-                bottom: 10,
+                bottom: 20,
                 // opacity: buttonOpacity,
                 // transf orm: [{translateY: buttonY}],
               }}>
