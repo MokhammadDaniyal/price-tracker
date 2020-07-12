@@ -8,6 +8,7 @@ import {
   TouchableWithoutFeedback,
   Animated,
   Image,
+  Easing,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -22,21 +23,43 @@ const {width, height} = Dimensions.get('window');
 const Login2Screen = (props) => {
   const isFirstRender = useRef(true);
   const [isLogin, setIsLogin] = useState(true);
-  const imageUp = useRef(new Animated.Value(100)).current;
+  const [imageUp] = useState(new Animated.Value(100));
   const fadeIn = useRef(new Animated.Value(0)).current;
+  const fadeInSlow = useRef(new Animated.Value(0)).current;
   const fadeOut = useRef(new Animated.Value(1)).current;
   const buttonDown = useRef(new Animated.Value(0)).current;
+  const [spinValue] = useState(new Animated.Value(0));
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+  const offset = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [50, isLogin ? -270 : -320],
+  });
 
   const imageUpAnimation = () => {
     Animated.parallel([
       Animated.timing(imageUp, {
         toValue: isLogin ? -270 : -320,
+        easing: Easing.linear,
         duration: 500,
         useNativeDriver: true,
       }),
       Animated.timing(fadeIn, {
         toValue: 1,
         duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeInSlow, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.timing(buttonDown, {
@@ -71,6 +94,17 @@ const Login2Screen = (props) => {
       Animated.timing(fadeIn, {
         toValue: 0,
         duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeInSlow, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(spinValue, {
+        toValue: 0,
+        easing: Easing.linear,
+        duration: 1000,
         useNativeDriver: true,
       }),
       Animated.timing(buttonDown, {
@@ -144,10 +178,12 @@ const Login2Screen = (props) => {
               shadowOpacity: 0.2,
               elevation: 5,
               zIndex: 4,
-              opacity: fadeIn,
-              transform: [{translateY: imageUp}],
+              opacity: fadeInSlow,
+              transform: [{translateY: offset}, {rotate: spin}],
             }}>
-            <Text>X</Text>
+            <Animated.Text style={{transform: [{rotate: spin}]}}>
+              X
+            </Animated.Text>
           </Animated.View>
         </TouchableWithoutFeedback>
         <Animated.View
