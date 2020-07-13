@@ -9,6 +9,7 @@ import {
   Animated,
   Image,
   Easing,
+  Keyboard,
 } from 'react-native';
 import {connect} from 'react-redux';
 
@@ -160,6 +161,7 @@ const Login2Screen = (props) => {
           onPress={() => {
             setIsLogin(isLogin);
             imageDownAnimation();
+            Keyboard.dismiss();
           }}>
           <Animated.View
             style={{
