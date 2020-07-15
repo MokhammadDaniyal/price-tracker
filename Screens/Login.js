@@ -5,39 +5,62 @@ import {
   StyleSheet,
   Dimensions,
   KeyboardAvoidingView,
-  Keyboard,
   TouchableWithoutFeedback,
-  Platform,
   Animated,
-  Button,
+  Image,
+  Easing,
+  Keyboard,
 } from 'react-native';
 import {connect} from 'react-redux';
 
-import Svg, {Image, Circle, ClipPath} from 'react-native-svg';
+import Svg, {Circle} from 'react-native-svg';
 
 import {loginUser} from '../store/userReducer/actions';
 import Input from '../Components/Input';
+import images from '../images';
 
 const {width, height} = Dimensions.get('window');
 
 const Login2Screen = (props) => {
   const isFirstRender = useRef(true);
   const [isLogin, setIsLogin] = useState(true);
-  const imageUp = useRef(new Animated.Value(20)).current;
+  const [imageUp] = useState(new Animated.Value(100));
   const fadeIn = useRef(new Animated.Value(0)).current;
+  const fadeInSlow = useRef(new Animated.Value(0)).current;
   const fadeOut = useRef(new Animated.Value(1)).current;
   const buttonDown = useRef(new Animated.Value(0)).current;
+  const [spinValue] = useState(new Animated.Value(0));
+
+  const spin = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: ['0deg', '180deg'],
+  });
+  const offset = spinValue.interpolate({
+    inputRange: [0, 1],
+    outputRange: [50, isLogin ? -270 : -320],
+  });
 
   const imageUpAnimation = () => {
     Animated.parallel([
       Animated.timing(imageUp, {
         toValue: isLogin ? -270 : -320,
+        easing: Easing.linear,
         duration: 500,
         useNativeDriver: true,
       }),
       Animated.timing(fadeIn, {
         toValue: 1,
         duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeInSlow, {
+        toValue: 1,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(spinValue, {
+        toValue: 1,
+        duration: 800,
         useNativeDriver: true,
       }),
       Animated.timing(buttonDown, {
@@ -65,13 +88,24 @@ const Login2Screen = (props) => {
   const imageDownAnimation = () => {
     Animated.parallel([
       Animated.timing(imageUp, {
-        toValue: 20,
+        toValue: 100,
         duration: 500,
         useNativeDriver: true,
       }),
       Animated.timing(fadeIn, {
         toValue: 0,
         duration: 500,
+        useNativeDriver: true,
+      }),
+      Animated.timing(fadeInSlow, {
+        toValue: 0,
+        duration: 1000,
+        useNativeDriver: true,
+      }),
+      Animated.timing(spinValue, {
+        toValue: 0,
+        easing: Easing.linear,
+        duration: 1000,
         useNativeDriver: true,
       }),
       Animated.timing(buttonDown, {
@@ -90,7 +124,8 @@ const Login2Screen = (props) => {
   return (
     <KeyboardAvoidingView
       style={{flex: 1, justifyContent: 'center'}}
-      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
+      // behavior={Platform.OS === 'ios' ? 'padding' : undefined}
+      behavior="height">
       <View
         style={{
           flex: 1,
@@ -103,22 +138,22 @@ const Login2Screen = (props) => {
             {
               position: 'absolute',
               zIndex: 2,
-              //   top: 0,
-              heigh: height,
+              width: '100%',
               transform: [{translateY: imageUp}],
             },
           ]}>
           <Svg height={height + 90} width={width}>
-            <ClipPath id="clip">
-              <Circle r={height + 90} cx={width / 2} />
-            </ClipPath>
-            <Image
-              href={require('../assets/bg.jpg')}
-              width={width}
-              height={height + 90}
-              preserveAspectRatio="xMidYMid slice"
-              clipPath="url(#clip)"
-            />
+            <Circle fill="#F3904F" r={height + 90} cx={width / 2} />
+            <View
+              style={{
+                alignItems: 'center',
+                justifyContent: 'center',
+                backgroundColor: '#F3904F',
+                height: height + 100,
+                top: -80,
+              }}>
+              <Image source={images.logo} />
+            </View>
           </Svg>
         </Animated.View>
         <TouchableWithoutFeedback
@@ -126,6 +161,7 @@ const Login2Screen = (props) => {
           onPress={() => {
             setIsLogin(isLogin);
             imageDownAnimation();
+            Keyboard.dismiss();
           }}>
           <Animated.View
             style={{
@@ -144,10 +180,12 @@ const Login2Screen = (props) => {
               shadowOpacity: 0.2,
               elevation: 5,
               zIndex: 4,
-              opacity: fadeIn,
-              transform: [{translateY: imageUp}],
+              opacity: fadeInSlow,
+              transform: [{translateY: offset}, {rotate: spin}],
             }}>
-            <Text>X</Text>
+            <Animated.Text style={{transform: [{rotate: spin}]}}>
+              X
+            </Animated.Text>
           </Animated.View>
         </TouchableWithoutFeedback>
         <Animated.View
@@ -169,7 +207,7 @@ const Login2Screen = (props) => {
             <View
               style={{
                 ...styles.button,
-                bottom: 10,
+                bottom: 20,
                 // opacity: buttonOpacity,
                 // transf orm: [{translateY: buttonY}],
               }}>
@@ -184,11 +222,13 @@ const Login2Screen = (props) => {
             <View
               style={{
                 ...styles.button,
-                backgroundColor: '#2E71DC',
+                backgroundColor: '#3B4371',
                 // opacity: buttonOpacity,
                 // transf orm: [{translateY: buttonY}],
               }}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN UP</Text>
+              <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
+                SIGN UP
+              </Text>
             </View>
           </TouchableWithoutFeedback>
         </Animated.View>

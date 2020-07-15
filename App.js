@@ -27,7 +27,7 @@ class App extends React.Component {
     //   });
   }
   render() {
-    const img = require('./assets/bg.jpg');
+    // const img = require('./assets/bg.jpg');
     setTimeout(() => {
       SplashScreen.hide();
     }, 1000);
