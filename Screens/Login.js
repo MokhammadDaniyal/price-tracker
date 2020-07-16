@@ -124,8 +124,7 @@ const Login2Screen = (props) => {
   return (
     <KeyboardAvoidingView
       style={{flex: 1, justifyContent: 'center'}}
-      // behavior={Platform.OS === 'ios' ? 'padding' : undefined}
-      behavior="height">
+      behavior={Platform.OS === 'ios' ? 'padding' : undefined}>
       <View
         style={{
           flex: 1,
@@ -161,7 +160,7 @@ const Login2Screen = (props) => {
           onPress={() => {
             setIsLogin(isLogin);
             imageDownAnimation();
-            Keyboard.dismiss();
+            // Keyboard.dismiss();
           }}>
           <Animated.View
             style={{
