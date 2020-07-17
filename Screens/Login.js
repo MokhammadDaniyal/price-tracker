@@ -160,7 +160,7 @@ const Login2Screen = (props) => {
           onPress={() => {
             setIsLogin(isLogin);
             imageDownAnimation();
-            // Keyboard.dismiss();
+            Keyboard.dismiss();
           }}>
           <Animated.View
             style={{
