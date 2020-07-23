@@ -22,10 +22,9 @@ function ProductSearchScreen(props) {
           {label: 'Newegg', value: 'newegg'},
         ]}
         containerStyle={{
-          height: 40,
+          height: 45,
           flexDirection: 'row',
           marginHorizontal: 20,
-          height: 50,
           marginVertical: 5,
         }}
         style={{
@@ -45,7 +44,9 @@ function ProductSearchScreen(props) {
         defaultValue={website}
         onChangeItem={(item) => setWebsite(item.value)}
       />
-      <Input placeholder="Product Name" />
+      <View style={{width: '100%'}}>
+        <Input placeholder="Product Name" />
+      </View>
       <View style={{flex: 1, flexDirection: 'row'}}>
         <FlatList data={DATA} renderItem={({item}) => renderListItem(item)} />
       </View>
