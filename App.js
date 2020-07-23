@@ -13,6 +13,10 @@ import {connect} from 'react-redux';
 import RootNavigator from './navigation';
 import {AppLoading} from 'expo';
 import SplashScreen from 'react-native-splash-screen';
+import Amplify, {Auth} from 'aws-amplify';
+import awsconfig from './aws-exports';
+
+Amplify.configure(awsconfig);
 
 class App extends React.Component {
   constructor() {
