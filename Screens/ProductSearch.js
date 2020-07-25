@@ -1,12 +1,36 @@
-import React, {useState} from 'react';
-import {StyleSheet, View, Text, Button, FlatList, Image} from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {
+  StyleSheet,
+  View,
+  Text,
+  Button,
+  FlatList,
+  Image,
+  ActivityIndicator,
+} from 'react-native';
 import DropDownPicker from 'react-native-dropdown-picker';
 
 import images from '../images';
 import Input from '../Components/Input';
+import {getNeweggProducts} from '../network/';
 
 function ProductSearchScreen(props) {
   const [website, setWebsite] = useState(null);
+  const [data, setData] = useState([]);
+  const [searchText, setSearchText] = useState('');
+  const [page, setPage] = useState(1);
+  const [isLoadingMoreProducts, setisLoadingMoreProducts] = useState(false);
+
+  onScrollHandler = () => {
+    setPage(page + 1);
+    setisLoadingMoreProducts(true);
+  };
+  useEffect(() => {
+    getNeweggProducts(searchText, page * 10, (dataList) => {
+      setData(dataList);
+      setisLoadingMoreProducts(false);
+    });
+  }, [page]);
   return (
     <View
       style={{
@@ -45,21 +69,40 @@ function ProductSearchScreen(props) {
         defaultValue={website}
         onChangeItem={(item) => setWebsite(item.value)}
       />
-      <Input placeholder="Product Name" />
+      <Input
+        placeholder="Product Name"
+        onChange={(input) => {
+          setSearchText(input);
+        }}
+      />
       <View style={{flex: 1, flexDirection: 'row'}}>
-        <FlatList data={DATA} renderItem={({item}) => renderListItem(item)} />
+        <FlatList
+          data={data}
+          keyExtractor={(item, index) => item.link}
+          renderItem={({item}) => renderListItem(item)}
+          onEndReached={onScrollHandler}
+          onEndThreshold={0}
+        />
       </View>
-      <Text>ProductSearch!</Text>
       <Button
         onPress={() => {
           props.navigation.navigate('Product');
         }}
         title="GO TO Product"></Button>
+      <Button
+        onPress={() => {
+          getNeweggProducts(searchText, 10, (dataList) => {
+            setData(dataList);
+            setisLoadingMoreProducts(false);
+          });
+        }}
+        title="Search"></Button>
+      {isLoadingMoreProducts && <ActivityIndicator size="large" />}
     </View>
   );
 }
 
-function renderListItem({title, price, reviews}) {
+function renderListItem({title, price, reviews, image}) {
   return (
     <View
       style={{
@@ -75,7 +118,7 @@ function renderListItem({title, price, reviews}) {
       }}>
       <Image
         style={{flex: 1, height: 150, marginLeft: 10}}
-        source={images.ps4}
+        source={{uri: image}}
       />
       <View
         style={{
@@ -111,27 +154,5 @@ function renderListItem({title, price, reviews}) {
     </View>
   );
 }
-const DATA = [
-  {
-    id: 'bd7acbea-c1b1-46c2-aed5-3ad53abb28ba',
-    title:
-      'First Item with a very very very very very very very very very very very very very very very very long description',
-    price: 2500,
-    reviews: 1231123,
-  },
-  {
-    id: '3ac68afc-c605-48d3-a4f8-fbd91aa97f63',
-    title:
-      'Second Item with much much much much much much much much much much much much much much much much much much much much much much much much long description',
-    price: 2500,
-    reviews: 1231123,
-  },
-  {
-    id: '58694a0f-3da1-471f-bd96-145571e29d72',
-    title: 'Short description',
-    price: 2500,
-    reviews: 1231123,
-  },
-];
 
 export default ProductSearchScreen;

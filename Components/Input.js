@@ -57,7 +57,7 @@ const Input = (props) => {
           value={inputText}
           onChangeText={(text) => {
             setInputText(text);
-            if (props.onChang) props.onChange(text);
+            if (props.onChange) props.onChange(text);
           }}
           secureTextEntry={props.isSecure}
           autoCapitalize="none"
