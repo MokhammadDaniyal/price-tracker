@@ -15,6 +15,8 @@ import DateTimePickerModal from 'react-native-modal-datetime-picker';
 import images from '../images';
 
 function ProductScreen(props) {
+  //ACCESS PARAMS OF ITEM HERE LIKE SO:
+  const itemParams = props.route.params; // These params come from the list. Then need to call API to RETRIEVE PRODUCT SPECS
   const list = [
     {
       name: 'Send me push notification once the price drops below ',
