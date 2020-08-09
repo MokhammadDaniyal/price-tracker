@@ -35,13 +35,29 @@ export async function resendConfirmationCodeCognito(email) {
 }
 
 export async function signInCognito(email, password) {
-  console.log(email);
-  console.log(password);
   try {
     const user = await Auth.signIn(email, password);
     return {success: 'User is authenticated'};
   } catch (error) {
-    console.log('error signing in', error);
     return {error};
+  }
+}
+
+export async function signOutCognito() {
+  try {
+    await Auth.signOut({global: true});
+  } catch (error) {
+    console.log('error signing out: ', error);
+  }
+}
+
+export async function checkIsUserCreatedCognito(email) {
+  const code = '000000';
+  try {
+    const response = await Auth.confirmSignUp(email, code);
+    return response;
+  } catch (error) {
+    console.log(error.code);
+    return error.code;
   }
 }

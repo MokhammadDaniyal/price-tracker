@@ -6,6 +6,8 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  TouchableOpacity,
+  TouchableHighlight,
   Animated,
   Image,
   Easing,
@@ -18,6 +20,7 @@ import Svg, {Circle, ClipPath} from 'react-native-svg';
 import Modal from 'react-native-modal';
 
 import {loginUser} from '../store/userReducer/actions';
+import Button from '../Components/Button';
 import Input from '../Components/Input';
 import images from '../images';
 
@@ -26,6 +29,8 @@ import {
   signUpCognito,
   resendConfirmationCodeCognito,
   signInCognito,
+  signOutCognito,
+  checkIsUserCreatedCognito,
 } from '../utils/aws-cognito';
 
 const {width, height} = Dimensions.get('window');
@@ -47,6 +52,8 @@ const Login2Screen = (props) => {
   const [isModalVisible, setIsModalVisible] = useState(false);
   const [signUpVerification, setSignUpVerification] = useState('');
   const [isModalError, setIsModalError] = useState(false);
+  const [modalText, setModalText] = useState('');
+  const [isResendCodeDisabled, setIsResendCodeDisabled] = useState(true);
   const fadeIn = useRef(new Animated.Value(0)).current;
   const fadeInSlow = useRef(new Animated.Value(0)).current;
   const fadeOut = useRef(new Animated.Value(1)).current;
@@ -169,7 +176,7 @@ const Login2Screen = (props) => {
     }
     signUpCognito(email, password).then((reply) => {
       if (reply.error) {
-        console.log('error: ' + reply.error.message);
+        // console.log('error: ' + reply.error.message);
         setIsSignUpError(true);
         if (reply.error.message.includes('must have length greater than')) {
           setErrorIndex(1);
@@ -201,16 +208,44 @@ const Login2Screen = (props) => {
             'An account with the given email already exists',
           )
         ) {
-          setSignUpError('');
-          setIsSignUpError(false);
-          setErrorIndex(0);
-          setIsModalVisible(true);
+          checkIsUserCreatedCognito(signUpEmail).then((reply) => {
+            switch (reply) {
+              case 'CodeMismatchException':
+                setIsSignUpError(false);
+                setErrorIndex(-1);
+                setIsModalVisible(true);
+                setModalText('Please check your email!');
+                console.log('Code mismatch. Should open up the modal');
+                setTimeout(() => {
+                  console.log('time passed');
+                  setIsResendCodeDisabled(false);
+                }, 15000);
+                return;
+              case 'LimitExceededException':
+                setSignUpError(
+                  'Exceeded signing up limit. Please try a little later.',
+                );
+                setIsSignUpError(true);
+                setErrorIndex(0);
+                return;
+              case 'ExpiredCodeException':
+              default:
+                setSignUpError(
+                  'Email is already registered. Please try to sign in.',
+                );
+                setIsSignUpError(true);
+                setErrorIndex(0);
+                return;
+            }
+          });
         }
       } else {
+        console.log('bruuh');
         setSignUpError('');
         setIsSignUpError(false);
         setErrorIndex(-1);
         setIsModalVisible(true);
+        setModalText('Please check your email!');
       }
     });
   };
@@ -253,6 +288,11 @@ const Login2Screen = (props) => {
       console.log(reply);
       setIsModalError(false);
       setSignUpError('');
+      setIsResendCodeDisabled(true);
+      setTimeout(() => {
+        console.log('time passed');
+        setIsResendCodeDisabled(false);
+      }, 15000);
     });
   };
 
@@ -271,9 +311,16 @@ const Login2Screen = (props) => {
     }
     signInCognito(signInEmail, signInPassword).then((reply) => {
       if (reply.error) {
+        console.log(reply.error.message);
         if (reply.error.message.includes('Incorrect username or password')) {
           setErrorIndex(0);
           setSignInError('Incorrect username or password');
+        }
+        if (reply.error.message.includes('User is not confirmed')) {
+          setIsModalVisible(true);
+          setModalText(
+            'Account is not yet verified. Please enter a verification code from your email or request a new one',
+          );
         }
       } else if (reply.success) {
         props.login();
@@ -320,6 +367,7 @@ const Login2Screen = (props) => {
           onPress={() => {
             setIsLogin(isLogin);
             imageDownAnimation();
+            setErrorIndex(-1);
             // Keyboard.dismiss();
           }}>
           <Animated.View
@@ -358,38 +406,37 @@ const Login2Screen = (props) => {
               width: '100%',
             },
           ]}>
-          <TouchableWithoutFeedback
+          <Text
             onPress={() => {
-              setIsLogin(true);
-              imageUpAnimation();
+              props.login();
+            }}
+            style={{
+              bottom: 10,
+              alignSelf: 'center',
+              color: 'white',
+              fontSize: 16,
+              textDecorationLine: 'underline',
             }}>
-            <View
-              style={{
-                ...styles.button,
-                bottom: 20,
-                // opacity: buttonOpacity,
-                // transf orm: [{translateY: buttonY}],
-              }}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN IN</Text>
-            </View>
-          </TouchableWithoutFeedback>
-          <TouchableWithoutFeedback
+            Continue as a guest
+          </Text>
+          <Button
+            extraStyling={{position: 'relative', backgroundColor: '#3B4371'}}
+            extraTextStyling={{fontWeight: 'bold', color: 'white'}}
             onPress={() => {
               setIsLogin(false);
               imageUpAnimation();
-            }}>
-            <View
-              style={{
-                ...styles.button,
-                backgroundColor: '#3B4371',
-                // opacity: buttonOpacity,
-                // transf orm: [{translateY: buttonY}],
-              }}>
-              <Text style={{fontSize: 20, fontWeight: 'bold', color: 'white'}}>
-                SIGN UP
-              </Text>
-            </View>
-          </TouchableWithoutFeedback>
+            }}
+            text="SIGN UP"
+          />
+          <Button
+            extraStyling={{bottom: 20}}
+            extraTextStyling={{fontWeight: 'bold'}}
+            onPress={() => {
+              setIsLogin(true);
+              imageUpAnimation();
+            }}
+            text="SIGN IN"
+          />
         </Animated.View>
         {isLogin && (
           <Animated.View
@@ -412,17 +459,12 @@ const Login2Screen = (props) => {
               isError={errorIndex === 1}
               errorText={errorIndex === 1 ? signInError : undefined}
             />
-            <TouchableWithoutFeedback onPress={handleSignIn}>
-              <View
-                style={{
-                  ...styles.button,
-                  position: 'relative',
-                  // opacity: buttonOpacity,
-                  // transf orm: [{translateY: buttonY}],
-                }}>
-                <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN IN</Text>
-              </View>
-            </TouchableWithoutFeedback>
+            <Button
+              extraStyling={{position: 'relative'}}
+              extraTextStyling={{fontWeight: 'bold'}}
+              onPress={handleSignIn}
+              text="SIGN IN"
+            />
           </Animated.View>
         )}
         {!isLogin && (
@@ -454,37 +496,40 @@ const Login2Screen = (props) => {
               isError={errorIndex === 2 ? isSignUpError : undefined}
               errorText={errorIndex === 2 ? signUpError : undefined}
             />
-            <TouchableWithoutFeedback
-              onPress={() => handleSignUp(signUpEmail, signUpPassword)}>
-              <View
-                style={{
-                  ...styles.button,
-                  position: 'relative',
-                  // opacity: buttonOpacity,
-                  // transf orm: [{translateY: buttonY}],
-                }}>
-                <Text style={{fontSize: 20, fontWeight: 'bold'}}>SIGN UP</Text>
-              </View>
-            </TouchableWithoutFeedback>
+            <Button
+              extraStyling={{position: 'relative', backgroundColor: '#3B4371'}}
+              extraTextStyling={{fontWeight: 'bold', color: 'white'}}
+              onPress={() => handleSignUp(signUpEmail, signUpPassword)}
+              text="SIGN UP"
+            />
           </Animated.View>
         )}
       </View>
       <Modal
         style={{flex: 1}}
         isVisible={isModalVisible}
-        onBackdropPress={() => setIsModalVisible(false)}
+        onBackdropPress={() => {
+          setIsResendCodeDisabled(true);
+          setIsModalVisible(false);
+        }}
         animationIn={'slideInUp'}
         animationOut={'slideOutUp'}>
         <View
           style={{
             width: 'auto',
-            height: 190,
+            height: 210,
             justifyContent: 'center',
             backgroundColor: 'white',
             borderRadius: 15,
           }}>
-          <Text style={{textAlign: 'center', fontSize: 16, marginBottom: 10}}>
-            Please check your email!
+          <Text
+            style={{
+              textAlign: 'center',
+              fontSize: 16,
+              marginBottom: 10,
+              marginTop: 10,
+            }}>
+            {modalText}
           </Text>
           <Input
             onChange={(text) => setSignUpVerification(text)}
@@ -493,48 +538,33 @@ const Login2Screen = (props) => {
             errorText={isModalError ? signUpError : undefined}
           />
           <View style={{flexDirection: 'row'}}>
-            <TouchableWithoutFeedback onPress={handleNewSignUpCodeRequest}>
-              <View
-                style={{
-                  ...styles.button,
-                  flex: 1,
-                  height: 40,
-                  position: 'relative',
-                  marginTop: 10,
-                  marginHorizontal: 20,
-                  backgroundColor: '#2E71DC',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    color: 'white',
-                  }}>
-                  New code
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
-            <TouchableWithoutFeedback onPress={handleSignUpConfirm}>
-              <View
-                style={{
-                  ...styles.button,
-                  height: 40,
-                  marginHorizontal: 20,
-                  flex: 1,
-                  position: 'relative',
-                  marginTop: 10,
-                  backgroundColor: 'white',
-                }}>
-                <Text
-                  style={{
-                    fontSize: 20,
-                    fontWeight: 'bold',
-                    color: 'black',
-                  }}>
-                  Submit
-                </Text>
-              </View>
-            </TouchableWithoutFeedback>
+            <Button
+              onPress={handleNewSignUpCodeRequest}
+              disabled={isResendCodeDisabled}
+              extraStyling={{
+                flex: 1,
+                height: 40,
+                position: 'relative',
+                marginTop: 10,
+                marginHorizontal: 20,
+                backgroundColor: isResendCodeDisabled ? '#D3D3D3' : '#2E71DC',
+              }}
+              text="New code"
+              extraTextStyling={{color: 'white'}}
+            />
+            <Button
+              onPress={handleSignUpConfirm}
+              extraStyling={{
+                height: 40,
+                marginHorizontal: 20,
+                flex: 1,
+                position: 'relative',
+                marginTop: 10,
+                backgroundColor: 'white',
+              }}
+              text="Submit"
+              extraTextStyling={{color: 'black'}}
+            />
           </View>
         </View>
       </Modal>
@@ -563,22 +593,6 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: 'center',
     justifyContent: 'center',
-  },
-  button: {
-    backgroundColor: 'white',
-    height: 70,
-    borderRadius: 35,
-    alignSelf: 'center',
-    alignItems: 'center',
-    justifyContent: 'center',
-    marginVertical: 5,
-    shadowOffset: {width: 2, height: 2},
-    shadowColor: 'black',
-    elevation: 5,
-    shadowOpacity: 0.2,
-    position: 'absolute',
-    // bottom: 10,
-    width: '80%',
   },
   closeButton: {
     height: 40,
