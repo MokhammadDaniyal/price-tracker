@@ -20,4 +20,24 @@ const getNeweggProducts = (name, count, callback) =>
       console.log(error);
     });
 
-export {getNeweggProducts};
+const getNeweggProductInfo = (link, callback) =>
+  fetch('http://localhost:3000/products/getinfo', {
+    method: 'POST',
+    headers: {
+      Accept: 'application/json',
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      link: link,
+    }),
+  })
+    .then((response) => {
+      response.json().then((json) => {
+        callback(JSON.parse(json.data));
+      });
+    })
+    .catch((error) => {
+      console.log(error);
+    });
+
+export {getNeweggProducts, getNeweggProductInfo};

@@ -13,10 +13,15 @@ import Icon from 'react-native-vector-icons/FontAwesome';
 import DateTimePickerModal from 'react-native-modal-datetime-picker';
 
 import images from '../images';
+import {getNeweggProductInfo} from '../network/';
 
 function ProductScreen(props) {
   //ACCESS PARAMS OF ITEM HERE LIKE SO:
   const itemParams = props.route.params; // These params come from the list. Then need to call API to RETRIEVE PRODUCT SPECS
+  const [specs, setSpecs] = useState([]);
+  getNeweggProductInfo(props.route.params.link, (json) => {
+    setSpecs(json);
+  });
   const list = [
     {
       name: 'Send me push notification once the price drops below ',
