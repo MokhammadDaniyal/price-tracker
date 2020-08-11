@@ -1,12 +1,13 @@
-import React, {useState} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
-  ImageBackground,
+  Image,
   View,
   Text,
   TouchableHighlight,
   FlatList,
   TextInput,
+  ScrollView,
 } from 'react-native';
 import Modal from 'react-native-modal';
 import Icon from 'react-native-vector-icons/FontAwesome';
@@ -19,9 +20,13 @@ function ProductScreen(props) {
   //ACCESS PARAMS OF ITEM HERE LIKE SO:
   const itemParams = props.route.params; // These params come from the list. Then need to call API to RETRIEVE PRODUCT SPECS
   const [specs, setSpecs] = useState([]);
-  getNeweggProductInfo(props.route.params.link, (json) => {
-    setSpecs(json);
-  });
+
+  useEffect(() => {
+    getNeweggProductInfo(props.route.params.link, (json) => {
+      setSpecs(JSON.parse(json));
+    });
+  }, []);
+
   const list = [
     {
       name: 'Send me push notification once the price drops below ',
@@ -188,6 +193,38 @@ function ProductScreen(props) {
     }
   };
 
+  renderSpecRow = (spec) => {
+    return (
+      <View
+        style={{
+          flex: 1,
+          justifyContent: 'center',
+          alignItems: 'center',
+          borderBottomColor: 'black',
+          borderBottomWidth: 1,
+        }}>
+        <View style={{flexDirection: 'row'}}>
+          <View style={{flex: 1, padding: 10}}>
+            <Text>{Object.keys(spec)[0]}</Text>
+          </View>
+          <View style={{flex: 1.5, padding: 10}}>
+            <Text>{spec[Object.keys(spec)[0]]}</Text>
+          </View>
+        </View>
+      </View>
+    );
+  };
+  renderSpecTable = (spec) => {
+    return (
+      <View style={{flex: 1, alignItems: 'flex-start'}}>
+        <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 15}}>
+          {spec.title}
+        </Text>
+        {spec.specs.map((specRow) => renderSpecRow(specRow))}
+      </View>
+    );
+  };
+
   renderListItem = ({item}) => {
     return (
       <View
@@ -265,44 +302,42 @@ function ProductScreen(props) {
     );
   };
   return (
-    <View
+    <ScrollView
       style={{
         backgroundColor: 'white',
         flex: 1,
-        justifyContent: 'center',
       }}>
       <View
         style={{
-          flex: 1,
           justifyContent: 'center',
         }}>
-        <ImageBackground
-          style={{flex: 1, flexDirection: 'column', justifyContent: 'flex-end'}}
-          source={images.ps4}>
-          <View
+        <Image
+          style={{height: 150, width: 200, marginLeft: 10}}
+          source={{uri: itemParams.image}}
+        />
+        <View
+          style={{
+            flexDirection: 'row',
+            justifyContent: 'flex-end',
+            marginBottom: 5,
+          }}>
+          <TouchableHighlight
             style={{
-              flexDirection: 'row',
-              justifyContent: 'flex-end',
-              marginBottom: 5,
-            }}>
-            <TouchableHighlight
+              ...styles.trackItemButton,
+              backgroundColor: isTrackingAlready ? 'red' : '#68a0cf',
+            }}
+            onPress={resetModalState}>
+            <Text
               style={{
-                ...styles.trackItemButton,
-                backgroundColor: isTrackingAlready ? 'red' : '#68a0cf',
-              }}
-              onPress={resetModalState}>
-              <Text
-                style={{
-                  color: '#fff',
-                  textAlign: 'center',
-                  padding: 5,
-                  fontSize: 17,
-                }}>
-                {isTrackingAlready ? 'Stop tracking item' : 'Track this item'}
-              </Text>
-            </TouchableHighlight>
-          </View>
-        </ImageBackground>
+                color: '#fff',
+                textAlign: 'center',
+                padding: 5,
+                fontSize: 17,
+              }}>
+              {isTrackingAlready ? 'Stop tracking item' : 'Track this item'}
+            </Text>
+          </TouchableHighlight>
+        </View>
       </View>
       <View
         style={{
@@ -321,7 +356,7 @@ function ProductScreen(props) {
           }}>
           <View style={{alignItems: 'center', marginTop: 15, marginBottom: 15}}>
             <Text style={{fontWeight: 'bold', fontSize: 20}}>
-              {product.title}
+              {itemParams.title}
             </Text>
           </View>
           <View
@@ -364,9 +399,7 @@ function ProductScreen(props) {
             justifyContent: 'flex-start',
           }}>
           <Text style={{fontSize: 20, fontWeight: 'bold'}}>Description:</Text>
-          <Text style={{fontSize: 19, marginTop: 10}}>
-            {product.description}
-          </Text>
+          {specs.map((spec) => renderSpecTable(spec))}
         </View>
         <View style={{flex: 1, justifyContent: 'flex-start'}}>
           <Text>3</Text>
@@ -414,7 +447,7 @@ function ProductScreen(props) {
           </View>
         </View>
       </Modal>
-    </View>
+    </ScrollView>
   );
 }
 
