@@ -216,7 +216,11 @@ function ProductScreen(props) {
   };
   renderSpecTable = (spec) => {
     return (
-      <View style={{flex: 1, alignItems: 'flex-start'}}>
+      <View
+        style={{
+          flex: 1,
+          alignItems: 'flex-start',
+        }}>
         <Text style={{fontSize: 20, fontWeight: 'bold', marginTop: 15}}>
           {spec.title}
         </Text>
@@ -342,6 +346,7 @@ function ProductScreen(props) {
       <View
         style={{
           paddingLeft: 10,
+          paddingRight: 10,
           flex: 1,
           justifyContent: 'space-around',
           borderTopWidth: 0.4,
